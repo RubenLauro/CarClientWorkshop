@@ -1,0 +1,13 @@
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.csprojAssemblyReference.cache
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.Form1.resources
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.Properties.Resources.resources
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.csproj.GenerateResource.cache
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.csproj.CoreCompileInputs.cache
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\bin\Debug\CarClient.exe.config
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\bin\Debug\CarClient.exe
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\bin\Debug\CarClient.pdb
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\bin\Debug\RestSharp.dll
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\bin\Debug\RestSharp.xml
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.csproj.CopyComplete
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.exe
+C:\Users\Ruben Lauro\Desktop\Sem\Trabalho2\CarClient\CarClientWorkshop\CarClient\obj\Debug\CarClient.pdb

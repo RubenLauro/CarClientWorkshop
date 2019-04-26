@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using CarClient.Model;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,55 +16,72 @@ namespace CarClient
 {
     public partial class Form1 : Form
     {
-        string baseURI = "http://localhost:59227/api/";
-        RestClient restClient;
+        private string baseURI = "http://my-json-server.typicode.com/RubenLauro/CarClientWorkshop/";
+        private RestClient restClient;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void buttonSpecificParkDetails_Click(object sender, EventArgs e)
+        private void PrintErrorMessage()
         {
-            //var parkID = GetParkIdFromCombobox();
-            ///api/parks/{id} 
-            restClient = new RestClient(baseURI + "parks/" + parkID);
+            listBoxCars.Items.Add("Error connecting to the RESTful service.");
+        }
+
+        private void BtnGetAll_Click(object sender, EventArgs e)
+        {
+            restClient = new RestClient(baseURI + "cars");
 
             var request = new RestRequest();
             request.Method = Method.GET;
             request.AddHeader("Accept", "application/json");
 
-            
             var response = restClient.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 JavaScriptSerializer jSer = new JavaScriptSerializer();
-                /*
-                Park park = jSer.Deserialize<Park>(response.Content.ToString());
-                richTextBox.AppendText(parkID);
-                richTextBox.AppendText("\nDescription : " + park.Description);
-                richTextBox.AppendText("\nNumber of Spots : " + park.NumberOfSpots);
-                richTextBox.AppendText("\nOperating Hours : " + park.OperatingHours);
-                richTextBox.AppendText("\nNumber of Special Spots : " + park.NumberOfSpecialSpots);
-                richTextBox.AppendText("\nTimestamp : " + park.Timestamp);
-                richTextBox.AppendText("\nGeoLocation File: " + park.GeoLocationFile + "\n\n");
-                */
-            }
-            else
-            {
-                PrintErrorMessage(response.StatusCode);
-            }
+                List<Car> cars = jSer.Deserialize<List<Car>>(response.Content.ToString());
 
-        }
-        private void PrintErrorMessage(HttpStatusCode statusCode)
-        {
-            if (statusCode == HttpStatusCode.NotFound)
-            {
-                //richTextBox.AppendText("No record(s) found. \n");
+                foreach (Car car in cars)
+                {
+                    listBoxCars.Items.Add(car.brand + " " + car.model);
+                }
             }
             else
             {
-                //richTextBox.AppendText("Error connecting to the RESTful service. \n");
+                PrintErrorMessage();
+            }
+        }
+
+        private void ListBoxCars_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int carId = listBoxCars.SelectedIndex+1;
+
+            restClient = new RestClient(baseURI + "cars/" + carId);
+
+            var request = new RestRequest();
+            request.Method = Method.GET;
+            request.AddHeader("Accept", "application/json");
+
+            var response = restClient.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                JavaScriptSerializer jSer = new JavaScriptSerializer();
+                Car car = jSer.Deserialize<Car>(response.Content.ToString());
+
+                carImage.ImageLocation = car.image;
+                lblBrand.Text = car.brand;
+                lblModel.Text = car.model;
+                lblVersion.Text = car.version;
+                lblEngine.Text = car.engine;
+                lblHorsePower.Text = car.horsepower;
+                lblFuel.Text = car.fuel;
+                lblPrice.Text = int.Parse(car.price).ToString("C");
+            }
+            else
+            {
+                PrintErrorMessage();
             }
         }
     }
