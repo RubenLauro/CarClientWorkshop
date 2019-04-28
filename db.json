@@ -133,6 +133,17 @@
       "image": "https://automais.autosport.pt/wp-content/uploads/2018/08/Mercedes-Benz-G63-AMG-2013-2.jpg"
     },
     {
+      "id": 20,
+      "brand": "Mercedes-Benz",
+      "model": "G",
+      "version": "63 AMG Station",
+      "engine": "5461",
+      "horsepower": 572,
+      "fuel": "Gasoline",
+      "price": "211030",
+      "image": "https://automais.autosport.pt/wp-content/uploads/2018/08/Mercedes-Benz-G63-AMG-2013-2.jpg"
+    },
+    {
       "id": 13,
       "brand": "Nissan",
       "model": "370Z",
