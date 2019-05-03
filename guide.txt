@@ -1,0 +1,135 @@
+--Apresentação
+--Verificar que o visual studio tem o package do .net (tools->get tools and features)
+--Instalar api package helper (tools-> NuGet Package Manager-> Manage NuGet Packages for Solution -> Pesquisar "RestSharp" -> Selecionar a nossa solução "Car Client" -> Install)
+--(Solution Explorer) Adicionar referencia para Serializer (References -> lado direito do rato -> add reference -> Pesquisar "Extensions" -> Adicionar "System.Web.Extensions" -> Ok)
+
+--Começar a implementação
+
+--Parte 1 (Lista de carros)
+--Alterar o nome do Form de Form1 para Cars
+--Adicionar o botao get All e alterar o texto mostrado e o id do botao
+--Adicionar a Lista onde vão estar aparecer todos os carros e alterar o id do botao
+--Double click no botão getAll para criar o evento on_click
+--Criar duas variaveis o uma do tipo string que vai ser o Uri do serviço e outra do tipo RestClient que vai ser a nossa variavel para instanciar o cliente que vai fazer o pedido
+--Vamos precisar de um modelo do tipo Carro, por isso vamos criar uma pasta modelo e lá dentro a classe Car
+--Criar a classe car de acordo com o que é retornado no serviço http://my-json-server.typicode.com/RubenLauro/CarClientWorkshop/cars, pode se usar http://json2csharp.com para criar a classe
+--Passando para a implementação do metodo
+	--Criar uma nova instancia da classe RestClient na qual vamos passar por argumento a variavel quem contem o uri do serviço
+	--Criar uma nova instancia da classe RestRequest para preencher o metodo (GET) e os headers ("Accept", "application/json")
+	--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Limpar a lista
+			--Precorrer a lista de carros devolvida pelo serviço
+				--Adicionar a lista da UI, a marca concatenada com o modelo, ex: "Audi A1 Sportsback"
+		--Senão
+			--Mostrar uma mensagem de erro
+
+--Parte 2 (Selecionar um carro)
+--Adicionar uma groupBox e alterar o titulo para "Selected Car"
+--Adicionar uma pictureBox e alterar o id e o sizeMode para StretchImage
+--Adicionar as labels com o texto: "Brand:", "Model:", "Engine:", "Horsepower:", "Fuel:", "Price:"
+--Adicionar as labels onde vão ser introduzidas as especificações do carro com os ids adequados por ex. "lblBrand", "lblModel", etc.
+--Selecionar a lista depois eventos (simbolo do raio) e clicar duas vezes em cima do evento SelectedIndexChanged
+--Passando para a implementação do metodo
+	--Obter o indice da lista dos carros selecionado pelo utilizador (+1) (forma errada de se fazer) (Se a lista tiver ordenada de maneira diferente já não vai funcionar)
+	--Criar uma nova instancia da classe RestClient na qual vamos passar por argumento a variavel quem contem o uri do serviço
+	--Criar uma nova instancia da classe RestRequest para preencher o metodo (GET) e os headers ("Accept", "application/json")
+	--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Preencher os campos da UI com as informações devolvidas 
+			--Para por o preço de maneira mais legivel usa-se int.Parse(car.price).ToString("C"), passamos o valor para inteiro para depois aplicarmos um formato à string
+		--Senão
+			--Mostrar uma mensagem de erro
+
+--Parte 3 (Ordenar por Hp)
+--Adicionar uma groupBox e alterar o titulo "Filters"
+--Adicionar uma label com o texto "Horsepower:"
+--Adicionar uma comboBox e alterar os items para "ascending" e "descending" e o id para um adequado
+--Adicionar um botão com texto "Filter" e alterar o id para um adequado
+--Double click no form para criar o evento on_load
+--Double click no botão filter para criar o evento on_click
+--Adicionar no contrutor do form o indice default da comboBox
+--Passando para a implementação do metodo
+	--Copiar o que está metodo do onClick do botão getAll para o metodo on_load do form e eliminar o metodo onClick
+	--Se o item selecionado for "Ascending" o pedido será "cars?_sort=horsepower&_order=asc"
+	--Senão o pedido será "cars?_sort=horsepower&_order=desc"
+	--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Limpar a lista
+			--Precorrer a lista de carros devolvida pelo serviço
+				--Adicionar a lista da UI, a marca concatenada com o modelo, ex: "Audi A1 Sportsback"
+		--Senão
+			--Mostrar uma mensagem de erro
+--Surge um problema, o carro selecionado não coincide com o carro que está a ser mostrado
+	--A lista de carros passa a ser atributo da classe form 
+	--Remover o +1 acrescentado ao SelectedIndex
+	--Atraves desse index vamos buscar o id do carro correto a lista e executamos o pedido
+
+--Extras
+--Parte 1 (Filtrar por marca e ordenar pelo modelo)
+--Adicionar uma label com o texto "Brand:"
+--Adicionar uma comboBox para as marcas e alterar o id para o adequado
+--Adicionar uma comboBox para a ordem do modelo e alterar items para "ascending" e "descending" e o id para um adequado
+--Passando para a implementação
+	--Preencher os items da comboBox das marcas no evento onLoad do form
+	--Certificar que não existem marcas repetidas
+	--No evento on click do botão filter
+		--Se estiver um item selecionado na comboBoxOrderHP e se for "Ascending" o pedido será "cars?_sort=horsepower&_order=asc"
+		--Senão Se estiver um item selecionado na comboBoxOrderHP e se for "Descending" o pedido será "cars?_sort=horsepower&_order=asc"
+		--Senão Se estiver um item selecionado na comboBoxBrand e Se estiver um item selecionado na comboBoxModelOrder e se for "Descending" o pedido será por ex: "cars?brand=Audi&_sort=model&_order=desc"
+		--Senão Se estiver um item selecionado na comboBoxBrand e Se estiver um item selecionado na comboBoxModelOrder e se for "Ascending" o pedido será por ex: "cars?brand=Audi&_sort=model&_order=asc"
+		--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Limpar a lista
+			--Precorrer a lista de carros devolvida pelo serviço
+				--Adicionar a lista da UI, a marca concatenada com o modelo, ex: "Audi A1 Sportsback"
+		--Senão
+			--Mostrar uma mensagem de erro
+
+--Parte 2 (Layout mais limpo com os filtros separados por tab)
+--Adicionar um tabControl e mudar o texto das tabs
+--Colocar dentro de cada tab o filtro
+--Passando para a implementação
+	--Preencher os items da comboBox das marcas no evento onLoad do form
+	--Certificar que não existem marcas repetidas
+	--No evento on click do botão filter da primeira tab
+		--Se o item selecionado for "Ascending" o pedido será "cars?_sort=horsepower&_order=asc"
+		--Senão o pedido será "cars?_sort=horsepower&_order=desc"
+		--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Limpar a lista
+			--Precorrer a lista de carros devolvida pelo serviço
+				--Adicionar a lista da UI, a marca concatenada com o modelo, ex: "Audi A1 Sportsback"
+		--Senão
+			--Mostrar uma mensagem de erro
+
+	--No evento on click do botão filter da segunda tab
+		--Senão Se estiver um item selecionado na comboBoxBrands e Se estiver um item selecionado na comboBoxModelOrder e se for "Descending" o pedido será por ex: "cars?brand=Audi&_sort=model&_order=desc"
+		--Senão Se estiver um item selecionado na comboBoxBrands e Se estiver um item selecionado na comboBoxModelOrder e se for "Ascending" o pedido será por ex: "cars?brand=Audi&_sort=model&_order=asc"
+		--Executar o request
+		--Se o codigo da resposta for OK(200)
+			--Criar uma instancia da classe JavaScriptSerializer
+			--Descerializar o conteudo da resposta com o metodo Deserialize da classe JavaScriptSerializer
+			--Limpar a lista
+			--Precorrer a lista de carros devolvida pelo serviço
+				--Adicionar a lista da UI, a marca concatenada com o modelo, ex: "Audi A1 Sportsback"
+		--Senão
+			--Mostrar uma mensagem de erro
+
+
+
+
+
+
+
+

@@ -24,9 +24,13 @@ namespace CarClient
         public Form1()
         {
             InitializeComponent();
+            /*
             comboBoxOrderHp.SelectedIndex = 2;
             comboBoxModelOrder.SelectedIndex = 2;
             comboBoxBrand.SelectedIndex = 0;
+            */
+            comboBoxHorsePowerOrder.SelectedIndex = 0;
+            comboBoxModelOrderTab.SelectedIndex = 0;
         }
 
         private void PrintErrorMessage()
@@ -84,9 +88,10 @@ namespace CarClient
                 foreach (Car car in cars)
                 {
                     listBoxCars.Items.Add(car.brand + " " + car.model);
-                    if (!comboBoxBrand.Items.Contains(car.brand))
+
+                    if (!comboBoxBrands.Items.Contains(car.brand))
                     {
-                        comboBoxBrand.Items.Add(car.brand);
+                        comboBoxBrands.Items.Add(car.brand);
                     }
                 }
             }
@@ -96,11 +101,12 @@ namespace CarClient
             }
         }
 
+        /*
         private void BtnFilter_Click(object sender, EventArgs e)
         {
-            if (comboBoxBrand.SelectedItem.ToString().Trim().Equals("") && comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Ascending") && comboBoxModelOrder.SelectedItem.Equals("Descending"))
+            if (comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Ascending"))
             {
-                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=horsepower,model&_order=asc,desc");
+                restClient = new RestClient(baseURI + "cars?_sort=horsepower&_order=asc");
             }
             else if(comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Descending"))
             {
@@ -114,16 +120,24 @@ namespace CarClient
             {
                 restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=model&_order=desc");
             }
+            
             else if (comboBoxBrand.SelectedItem != null && comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Ascending") && comboBoxModelOrder.SelectedItem.Equals("Descending"))
             {
                 restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=horsepower,model&_order=asc,desc");
             }
-            /*
             else if (comboBoxBrand.SelectedItem != null && comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Ascending") && comboBoxModelOrder.SelectedItem.Equals("Ascending"))
             {
-                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=model&_order=desc");
+                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=horsepower,model&_order=asc,asc");
             }
-            */
+            else if (comboBoxBrand.SelectedItem != null && comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Descending") && comboBoxModelOrder.SelectedItem.Equals("Descending"))
+            {
+                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=horsepower,model&_order=desc,desc");
+            }
+            else if (comboBoxBrand.SelectedItem != null && comboBoxOrderHp.SelectedItem != null && comboBoxOrderHp.SelectedItem.Equals("Descending") && comboBoxModelOrder.SelectedItem.Equals("Ascending"))
+            {
+                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrand.SelectedItem.ToString()}&_sort=horsepower,model&_order=desc,asc");
+            }
+            
 
             var request = new RestRequest();
             request.Method = Method.GET;
@@ -145,6 +159,8 @@ namespace CarClient
                 PrintErrorMessage();
             }
         }
+
+        */
 
         private void BtnGetAll_Click(object sender, EventArgs e)
         {
@@ -163,10 +179,6 @@ namespace CarClient
                 foreach (Car car in cars)
                 {
                     listBoxCars.Items.Add(car.brand + " " + car.model);
-                    if (!comboBoxBrand.Items.Contains(car.brand))
-                    {
-                        comboBoxBrand.Items.Add(car.brand);
-                    }
                 }
             }
             else
@@ -174,5 +186,69 @@ namespace CarClient
                 PrintErrorMessage();
             }
         }
-    }
+
+        private void BtnFilterHorsePower_Click(object sender, EventArgs e)
+        {
+            if (comboBoxHorsePowerOrder.SelectedItem != null && comboBoxHorsePowerOrder.SelectedItem.Equals("Ascending"))
+            {
+                restClient = new RestClient(baseURI + "cars?_sort=horsepower&_order=asc");
+            }
+            else if (comboBoxHorsePowerOrder.SelectedItem != null && comboBoxHorsePowerOrder.SelectedItem.Equals("Descending"))
+            {
+                restClient = new RestClient(baseURI + "cars?_sort=horsepower&_order=desc");
+            }
+
+            var request = new RestRequest();
+            request.Method = Method.GET;
+            request.AddHeader("Accept", "application/json");
+
+            var response = restClient.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                JavaScriptSerializer jSer = new JavaScriptSerializer();
+                cars = jSer.Deserialize<List<Car>>(response.Content.ToString());
+                listBoxCars.Items.Clear();
+                foreach (Car car in cars)
+                {
+                    listBoxCars.Items.Add(car.brand + " " + car.model);
+                }
+            }
+            else
+            {
+                PrintErrorMessage();
+            }
+        }
+
+        private void BtnBrandFilter_Click(object sender, EventArgs e)
+        {
+            if (comboBoxBrands.SelectedItem != null && comboBoxModelOrderTab.SelectedItem != null && comboBoxModelOrderTab.SelectedItem.Equals("Ascending"))
+            {
+                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrands.SelectedItem.ToString()}&_sort=model&_order=asc");
+            }
+            else if (comboBoxBrands.SelectedItem != null && comboBoxModelOrderTab.SelectedItem != null && comboBoxModelOrderTab.SelectedItem.Equals("Descending"))
+            {
+                restClient = new RestClient(baseURI + $"cars?brand={comboBoxBrands.SelectedItem.ToString()}&_sort=model&_order=desc");
+            }
+
+            var request = new RestRequest();
+            request.Method = Method.GET;
+            request.AddHeader("Accept", "application/json");
+
+            var response = restClient.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                JavaScriptSerializer jSer = new JavaScriptSerializer();
+                cars = jSer.Deserialize<List<Car>>(response.Content.ToString());
+                listBoxCars.Items.Clear();
+                foreach (Car car in cars)
+                {
+                    listBoxCars.Items.Add(car.brand + " " + car.model);
+                }
+            }
+            else
+            {
+                PrintErrorMessage();
+            }
+        }
+        }
 }
