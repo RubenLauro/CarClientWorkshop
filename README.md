@@ -3,3 +3,6 @@ Workshop realizado no âmbito da Unidade Curricular Seminário para a Escola Sec
 
   - Ruben Lauro 
   - Tiago Simões
+
+Resultado Final:
+![Resultado Final](https://i.imgur.com/7qkBfOX.png)
